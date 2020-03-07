@@ -9,5 +9,5 @@ version 01:
 	usage hashit <path>
 
 		example usage: 
-			*.nix: ./hashit /var/www/
-			Windows: C:\Users\mosinu\Downloads
+			*.nix: ./gocheck /var/www/
+			Windows: gocheck.exe C:\Users\mosinu\Downloads
