@@ -1,12 +1,12 @@
-v 02 
+#v 02 
 	check for duplicate files by comparing md5sum
 	break out into packages
 
-v 03
+#v 03
 	add sha1, sha256
 	add flag to choose between md5, sha1 sha256
 
-v04
+#v04
 	create archives
 	compare archive hash list to current list to determine if file has changed
 
