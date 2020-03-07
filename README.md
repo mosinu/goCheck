@@ -1,2 +1,13 @@
 # goCheck
-Go File Checker
+
+go filesystem check
+
+Tested on Linux and Windows 10
+
+version 01:
+	check md5sum of all files recurisely in given path
+	usage hashit <path>
+
+		example usage: 
+			*.nix: ./hashit /var/www/
+			Windows: C:\Users\mosinu\Downloads
