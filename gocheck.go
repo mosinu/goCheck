@@ -1,8 +1,9 @@
 package main
 
 import (
-	"crypto/sha512"
 	"crypto/md5"
+	"crypto/sha256"
+	"crypto/sha512"
 	"encoding/hex"
 	"flag"
 	"fmt"
@@ -11,7 +12,7 @@ import (
 	"path/filepath"
 )
 
-func md5sum(filePath string) (string) {
+func md5sum(filePath string) string {
 	var returnMD5String string
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -27,20 +28,36 @@ func md5sum(filePath string) (string) {
 	return returnMD5String
 }
 
-func sha512sum(filePath string) (string) {
+func sha256sum(filePath string) string {
+	var returnSHA256String string
+	file, err := os.Open(filePath)
+	if err != nil {
+		return returnSHA256String
+	}
+	defer file.Close()
+	hash := sha256.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		return returnSHA256String
+	}
+	hashInBytes := hash.Sum(nil)[:64]
+	returnSHA256String = hex.EncodeToString(hashInBytes)
+	return returnSHA256String
+}
+
+func sha512sum(filePath string) string {
 	var returnSHA512String string
 	file, err := os.Open(filePath)
-    if err != nil {
-        return returnSHA512String
-    }
-    defer file.Close()
-    hash := sha512.New()
-    if _, err := io.Copy(hash, file); err != nil {
-    	return returnSHA512String
-    }
-    hashInBytes := hash.Sum(nil)[:64]
-    returnSHA512String = hex.EncodeToString(hashInBytes)
-    return returnSHA512String
+	if err != nil {
+		return returnSHA512String
+	}
+	defer file.Close()
+	hash := sha512.New()
+	if _, err := io.Copy(hash, file); err != nil {
+		return returnSHA512String
+	}
+	hashInBytes := hash.Sum(nil)[:64]
+	returnSHA512String = hex.EncodeToString(hashInBytes)
+	return returnSHA512String
 }
 
 func visit(path string, f os.FileInfo, err error) error {
@@ -49,27 +66,31 @@ func visit(path string, f os.FileInfo, err error) error {
 
 	//flags
 	switch os.Args[1] {
-		case "sha512":
-			sha512Cmd.Parse(os.Args[2:])
-			hash := sha512sum(path)
-			fmt.Printf("sha512 for %s:\t%s\n",path, hash)
-		case "md5":
-			md5Cmd.Parse(os.Args[2:])
-			hash := md5sum(path)
-			fmt.Printf("md5 for %s:\t%s\n", path, hash)
-		default:
-			fmt.Println("expected 'md5' or 'sha512' flags\n")
-			os.Exit(1)
+	case "sha256":
+		sha256Cmd.Parse(os.Args[2:])
+		hash := sha256sum(path)
+		fmt.Printf("sha256 for %s:\t%s\n", path, hash)
+	case "md5":
+		md5Cmd.Parse(os.Args[2:])
+		hash := md5sum(path)
+		fmt.Printf("md5 for %s:\t%s\n", path, hash)
+	case "sha512":
+		sha512Cmd.Parse(os.Args[2:])
+		hash := sha512sum(path)
+		fmt.Printf("sha512 for %s:\t%s\n", path, hash)
+	default:
+		fmt.Println("expected 'md5', 'sha256','sha512' flags\n")
+		os.Exit(1)
 	}
 	return nil
 }
 
 func main() {
-	flag.Parse()
-	root := flag.Arg(1)
-	err := filepath.Walk(root, visit)
-	hash := md5sum(os.Args[2])
-	if err != nil {
-		fmt.Println("hash for %s\t%s\n", hash)
+	if len(os.Args) > 1 {
+		flag.Parse()
+		root := flag.Arg(1)
+		filepath.Walk(root, visit)
+	} else {
+		fmt.Println("No arguments given\n\n Usage: ", os.Args[0], " <flags> <path>")
 	}
 }

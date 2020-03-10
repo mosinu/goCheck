@@ -1,15 +1,18 @@
 # v.02 
-	check for duplicate files by comparing md5sum
-	break out into packages
+	add sha256
+	add error checking
 
 # v.03
-	add sha1, sha256
-	add flag to choose between md5, sha1 sha256
+	add sha512
+	add flag to choose between checksums
 
 # v.04
+	break out into packages
+	check for duplicate files by comparing checksums
 	create archives
-	compare archive hash list to current list to determine if file has changed
+	compare archive hash list to current list to determine if file has changed for archive/backup
 
-
-add db support
-create option to remove duplicate files and option to create appropriate links in place 
+	make usage more useful
+	logging and better error reporting
+	add db support
+	create option to remove duplicate files and option to create appropriate links in place 
