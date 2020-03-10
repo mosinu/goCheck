@@ -61,8 +61,9 @@ func sha512sum(filePath string) string {
 }
 
 func visit(path string, f os.FileInfo, err error) error {
+	md5Cmd := flag.NewFlagSet("md5", flag.ExitOnError)
+	sha256Cmd := flag.NewFlagSet("sha256", flag.ExitOnError)
 	sha512Cmd := flag.NewFlagSet("sha512", flag.ExitOnError)
-	md5Cmd := flag.NewFlagSet("md5Cmd", flag.ExitOnError)
 
 	//flags
 	switch os.Args[1] {
@@ -79,7 +80,7 @@ func visit(path string, f os.FileInfo, err error) error {
 		hash := sha512sum(path)
 		fmt.Printf("sha512 for %s:\t%s\n", path, hash)
 	default:
-		fmt.Println("expected 'md5', 'sha256','sha512' flags\n")
+		fmt.Println("expected 'md5', 'sha256','sha512' flags")
 		os.Exit(1)
 	}
 	return nil
