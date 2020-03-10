@@ -39,7 +39,7 @@ func sha256sum(filePath string) string {
 	if _, err := io.Copy(hash, file); err != nil {
 		return returnSHA256String
 	}
-	hashInBytes := hash.Sum(nil)[:64]
+	hashInBytes := hash.Sum(nil)[:32]
 	returnSHA256String = hex.EncodeToString(hashInBytes)
 	return returnSHA256String
 }
@@ -67,14 +67,14 @@ func visit(path string, f os.FileInfo, err error) error {
 
 	//flags
 	switch os.Args[1] {
+	case "md5":
+		md5Cmd.Parse(os.Args[2:])
+		hash := md5sum(path)
+		fmt.Printf("md5 for %s:\t\t%s\n", path, hash)
 	case "sha256":
 		sha256Cmd.Parse(os.Args[2:])
 		hash := sha256sum(path)
 		fmt.Printf("sha256 for %s:\t%s\n", path, hash)
-	case "md5":
-		md5Cmd.Parse(os.Args[2:])
-		hash := md5sum(path)
-		fmt.Printf("md5 for %s:\t%s\n", path, hash)
 	case "sha512":
 		sha512Cmd.Parse(os.Args[2:])
 		hash := sha512sum(path)
