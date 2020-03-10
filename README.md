@@ -10,5 +10,5 @@ version 03:
 	usage hashit <path>
 
 		example usage: 
-			*.nix: ./gocheck [sha512|md5] /var/www/
+			*nix: ./gocheck [sha512|md5] /var/www/
 			Windows: gocheck.exe [sha512|md5] C:\Users\mosinu\Downloads
